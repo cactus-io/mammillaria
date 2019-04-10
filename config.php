@@ -35,7 +35,7 @@ return array(
      * DB of the mime-types. In some OS there is no default 
      * mime-type DB, so you have to set a file.
      */
-    'mimetypes_db' =>  __DIR__ . '/storage/etc/mime.types',
+    'mimetypes_db' => __DIR__ . '/storage/etc/mime.types',
     /*
      * Supported languages by the server
      */
@@ -46,55 +46,85 @@ return array(
     /*
      * tmp_folder is used to generate temprory files
      */
-    'tmp_folder' =>  __DIR__ . '/storage/tmp',
-    
-    
-    
-    /*********************************************************
+    'tmp_folder' => __DIR__ . '/storage/tmp',
+
+    /**
+     * *******************************************************
      * Modules
-     *********************************************************/
+     * *******************************************************
+     */
     'installed_apps' => array(
         'Pluf',
         'Cactus'
     ),
     'middleware_classes' => array(
-        'Pluf_Middleware_Translation',
+        'Pluf_Middleware_Translation'
     ),
-    
-    /*********************************************************
+
+    /**
+     * *******************************************************
      * Templates
-     *********************************************************/
+     * *******************************************************
+     */
     'template_folders' => array(
-        __DIR__ . '/storage/templates',
+        __DIR__ . '/storage/templates'
     ),
     'template_tags' => array(
         'now' => 'Pluf_Template_Tag_Now',
         'cfg' => 'Pluf_Template_Tag_Cfg',
-        'tenant' => 'Pluf_Template_Tag_Tenant',
+        'tenant' => 'Pluf_Template_Tag_Tenant'
     ),
-    
-    /*********************************************************
+
+    /**
+     * *******************************************************
      * Logger
-     *********************************************************/
+     * *******************************************************
+     */
     'log_delayed' => true,
     'log_level' => Pluf_Log::ERROR,
     'log_handler' => 'Pluf_Log_File',
-    //----------------
+    // ----------------
     // Pluf file log handler configuration
-    //----------------
+    // ----------------
     /*
      * Pluf file log use a file to log all events. The main configuration
      * of this module is log file path. Set a path to the log file with
      * the following key
      */
     'pluf_log_file' => __DIR__ . '/storage/logs/pluf.log',
-    
-    
-    
-    /*********************************************************
+
+    /**
+     * *******************************************************
      * Cactus
-     *********************************************************/
-    // 'cactus_storage' => __DIR__ . '/storage/cactus',
-    
+     * *******************************************************
+     */
+    /*
+     * Storage path
+     * 
+     * The root folder of the storage. 
+     */
+    'cactus_storage' => __DIR__ . '/storage/cactus',
+
+    /*
+     *
+     * - HS256
+     * - HS384
+     * - HS512
+     * - RS256
+     * - RS384
+     * - RS512
+     * - ES256
+     * - ES384
+     * - ES512
+     * - PS256
+     * - PS384
+     * - PS512
+     * - PS512
+     * - PS512
+     * - none: No digital signature or MAC
+     */
+    'cactus_jwt_alg' => 'HS256',
+    'cactus_jwt_key_decode' => 'mammillaria-key',
+    'cactus_jwt_key_encode' => 'mammillaria-key',
 );
 

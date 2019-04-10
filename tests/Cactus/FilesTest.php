@@ -18,6 +18,7 @@
  */
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\IncompleteTestError;
+use Firebase\JWT\JWT;
 require_once 'Pluf.php';
 
 /**
@@ -44,11 +45,166 @@ class Cactus_FilesTest extends TestCase
      * Try to download a file with bad token
      *
      * @test
+     * @expectedException Exception
      */
     public function downloadFileWithBadToken()
     {
-        // login
         $response = self::$client->get('/api/v2/cactus/files/THIS-IS-BAD-TOKEN/content');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+    }
+
+    /**
+     * Try to download a file with invalid token
+     *
+     * @test
+     * @expectedException Exception
+     */
+    public function downloadFileWithInvalidToken()
+    {
+        $tokenValue = array(
+            'path' => '/README',
+            'access' => 'rw',
+            'account' => array(),
+            'host' => array()
+        );
+
+        $token = JWT::encode($tokenValue, 'this is a key', 'HS256');
+
+        $response = self::$client->get('/api/v2/cactus/files/THIS-IS-BAD-TOKEN/content');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+    }
+
+    /**
+     * Try to download a file with bad token
+     *
+     * @test
+     */
+    public function downloadFileWithToken()
+    {
+        $tokenValue = array(
+            'path' => '/README',
+            'access' => 'rw',
+            'account' => array(),
+            'host' => array()
+        );
+
+        $token = JWT::encode($tokenValue, Pluf::f('cactus_jwt_key_encode'), Pluf::f('cactus_jwt_alg'));
+
+        // Get file
+        $response = self::$client->get('/api/v2/cactus/files/' . $token . '/content');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+    }
+
+    /**
+     * Try to download a file with bad token
+     *
+     * @test
+     * @expectedException Pluf_Exception_DoesNotExist
+     */
+    public function downloadNotFoundFileWithToken()
+    {
+        $tokenValue = array(
+            'path' => '/README' . rand(),
+            'access' => 'rw',
+            'account' => array(),
+            'host' => array()
+        );
+
+        $token = JWT::encode($tokenValue, Pluf::f('cactus_jwt_key_encode'), Pluf::f('cactus_jwt_alg'));
+
+        // Get file
+        $response = self::$client->get('/api/v2/cactus/files/' . $token . '/content');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+    }
+
+    /**
+     * Checking default accss
+     *
+     * @test
+     */
+    public function downloadDefaultReadAccessToken()
+    {
+        $tokenValue = array(
+            'path' => '/README',
+//             'access' => 'r',
+        );
+
+        $token = JWT::encode($tokenValue, Pluf::f('cactus_jwt_key_encode'), Pluf::f('cactus_jwt_alg'));
+
+        // Get file
+        $response = self::$client->get('/api/v2/cactus/files/' . $token . '/content');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+    }
+
+    /**
+     * Try to read with write access
+     *
+     * @test
+     * @expectedException Cactus_Exceptions_BadToken
+     */
+    public function downloadWithWriteToken()
+    {
+        $tokenValue = array(
+            'path' => '/README',
+            'access' => 'w',
+            'account' => array(),
+            'host' => array()
+        );
+
+        $token = JWT::encode($tokenValue, Pluf::f('cactus_jwt_key_encode'), Pluf::f('cactus_jwt_alg'));
+
+        // Get file
+        $response = self::$client->get('/api/v2/cactus/files/' . $token . '/content');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+    }
+    
+    
+    /**
+     * @test
+     * @expectedException Cactus_Exceptions_BadToken
+     */
+    public function downloadWithExpiredDateToken()
+    {
+        $tokenValue = array(
+            'path' => '/README',
+            'access' => 'rw',
+            'expiry' => '2018-00-00 00:00:00',
+            'account' => array(),
+            'host' => array()
+        );
+        
+        $token = JWT::encode($tokenValue, Pluf::f('cactus_jwt_key_encode'), Pluf::f('cactus_jwt_alg'));
+        
+        // Get file
+        $response = self::$client->get('/api/v2/cactus/files/' . $token . '/content');
+        $this->assertNotNull($response);
+        $this->assertEquals($response->status_code, 200);
+    }
+    
+    
+    /**
+     * @test
+     */
+    public function downloadExpiryDateToken()
+    {
+        $tokenValue = array(
+            'path' => '/README',
+            'access' => 'rw',
+            'expiry' => gmdate('Y-m-d H:i:s', strtotime('+1 day')),
+            'account' => array(),
+            'host' => array()
+        );
+        
+        $token = JWT::encode($tokenValue, Pluf::f('cactus_jwt_key_encode'), Pluf::f('cactus_jwt_alg'));
+        
+        // Get file
+        $response = self::$client->get('/api/v2/cactus/files/' . $token . '/content');
         $this->assertNotNull($response);
         $this->assertEquals($response->status_code, 200);
     }

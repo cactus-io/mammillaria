@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+use Firebase\JWT\JWT;
 
 /**
  * Cactus default view
@@ -40,17 +41,42 @@ class Cactus_Views extends Pluf_Views
      */
     public function downloadContent($request, $match)
     {
+        $alg = Pluf::f('cactus_jwt_alg', 'HS256');
+        $key = Pluf::f('cactus_jwt_key_decode');
+        $token = JWT::decode($match['token'], $key, array(
+            $alg
+        ));
+
+        // check access of read
+        $access = $this->getAttribute($token, 'access', 'r');
+        if (strpos($access, 'r') === false) {
+            throw new Cactus_Exceptions_BadToken('No no permission to read', 10402, 404, 'there is no r access');
+        }
+        $expiry = $this->getAttribute($token, 'expiry', null);
+        if (isset($expiry) && gmdate("Y-m-d H:i:s") > $expiry) {
+            throw new Cactus_Exceptions_BadToken('Token is expred', 10403, 404, 'date-time field \'expiry\' if old');
+        }
+
         // GET data
-        $filePath = '/README';
-        $fileName = 'README';
-        
+        $filePath = $token->path;
+
         /*
          * Response file
          */
         $path = Pluf::f('cactus_storage', __DIR__ . '/../storage/cactus') . $filePath;
         $response = new Pluf_HTTP_Response_File($path);
-        $response->headers['Content-Disposition'] = sprintf('attachment; filename="%s"', $fileName);
+        $response->headers['Content-Disposition'] = sprintf('attachment; filename="%s"', basename($filePath));
         return $response;
+    }
+    
+    /*
+     * Gets property value by name
+     */
+    private function getAttribute ($object, $key, $default){
+        if(!property_exists($object, $key)){
+            return $default;
+        }
+        return $object->$key;
     }
 }
 

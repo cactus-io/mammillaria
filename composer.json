@@ -18,7 +18,8 @@
 	"minimum-stability" : "stable",
 	"prefer-stable" : true,
 	"require" : {
-		"pluf/core" : "5.5.x"
+		"pluf/core" : "5.5.x",
+		"firebase/php-jwt": "5.x"
 	},
 	"require-dev" : {
 		"pluf/test" : "5.5.x"
