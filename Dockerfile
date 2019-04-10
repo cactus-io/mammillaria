@@ -4,7 +4,6 @@
 #
 FROM php:7.2-apache
 
-MAINTAINER ViraWeb123 <info@viraweb123.com>
 ###########################################################
 # Build process
 ###########################################################
@@ -37,10 +36,7 @@ RUN docker-php-ext-enable mysqli
 # Support ZIP
 RUN echo "deb http://http.debian.net/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
 RUN apt-get install --no-install-recommends -y zlib1g-dev zip unzip
-# install jre
-RUN mkdir -p /usr/share/man/man1
-RUN apt-get install --no-install-recommends -y openjdk-8-jre-headless ca-certificates-java
-RUN java -version
+
 
 RUN docker-php-ext-install zip 
 #RUN docker-php-ext-install zlib 
@@ -80,33 +76,30 @@ RUN docker-php-ext-enable zip
 WORKDIR /var/www/
 # Add composer
 RUN apt-get install --no-install-recommends -y git
+WORKDIR /var/www/html/
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 
 
-WORKDIR /var/www
+WORKDIR /var/www/html/
 ENV COMPOSER_ALLOW_SUPERUSER 1
-COPY composer.json /var/www/
-RUN php composer.phar install --no-plugins --no-scripts
+COPY composer.json /var/www/html/
+RUN php composer.phar install --no-dev --no-plugins --no-scripts --optimize-autoloader
 ENV COMPOSER_ALLOW_SUPERUSER 0
 
 # files
-COPY etc/ /var/www/etc/
-COPY html/ /var/www/html/
-COPY lib/ /var/www/lib/
-COPY logs/ /var/www/logs/
-COPY sql/ /var/www/sql/
 COPY storage/ /var/www/storage/
-COPY flyway /var/www/
-COPY flyway.conf /var/www/
-COPY README.md /var/www/
+RUN chmod 777 /var/www/storage/
+
 COPY run.sh /var/www/
 RUN chmod +x /var/www/run.sh
 
-RUN chmod 777 /var/www/storage/
-RUN chmod 777 /var/www/logs/
+COPY index.php /var/www/html/
+COPY config.php /var/www/html/
+COPY urls.php /var/www/html/
+COPY .htaccess /var/www/html/
 
 # Remove unused
 RUN rm -rf /var/lib/apt/lists/\*
