@@ -100,6 +100,7 @@ COPY index.php /var/www/html/
 COPY config.php /var/www/html/
 COPY urls.php /var/www/html/
 COPY .htaccess /var/www/html/
+COPY ./Cactus /var/www/html/Cactus/
 
 # Remove unused
 RUN rm -rf /var/lib/apt/lists/\*
