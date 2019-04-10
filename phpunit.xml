@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+	<testsuites>
+		<testsuite name="Cactus">
+			<directory>tests/Cactus/</directory>
+		</testsuite>
+	</testsuites>
+
+	<!-- Code coverage -->
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">Cactus</directory>
+		</whitelist>
+	</filter>
+	<logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+	</logging>
+</phpunit>

@@ -1,0 +1,32 @@
+{
+	"name" : "cactus-io/mammillaria",
+	"description" : "A simple fast and stateless downloadserver",
+	"type" : "project",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Mostafa Barmshory",
+			"email" : "mostafa.barmshory@dpq.co.ir",
+			"homepage" : "http://dpq.co.ir",
+			"role" : "developer"
+		}, {
+			"name" : "Mohammad Hadi Mansouri",
+			"email" : "mohammad.hadi.mansouri@dpq.co.ir",
+			"homepage" : "http://dpq.co.ir",
+			"role" : "developer"
+		}
+	],
+	"minimum-stability" : "stable",
+	"prefer-stable" : true,
+	"require" : {
+		"pluf/core" : "5.5.x"
+	},
+	"require-dev" : {
+		"pluf/test" : "5.5.x"
+	},
+	"homepage" : "https://github.com/cactus-io/mammillaria",
+	"keywords" : [
+		"Cactus",
+		"Downloader",
+		"HTTP"
+	]
+}

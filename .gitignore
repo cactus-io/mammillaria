@@ -1,0 +1,8 @@
+# Eclipse
+/build/
+/.settings/
+
+# Composer
+/vendor/
+/composer.lock
+/composer.phar
