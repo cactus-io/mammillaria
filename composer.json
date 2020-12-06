@@ -18,16 +18,34 @@
 	"minimum-stability" : "stable",
 	"prefer-stable" : true,
 	"require" : {
-		"pluf/core" : "5.5.x",
-		"firebase/php-jwt" : "5.x"
+		"firebase/php-jwt" : "5.x",
+		"pluf/scion" : "7.0.x"
 	},
 	"require-dev" : {
-		"pluf/test" : "5.5.x"
+		"pluf/http2" : "7.0.x",
+		"phpunit/phpunit" : "9.x"
 	},
 	"homepage" : "https://github.com/cactus-io/mammillaria",
 	"keywords" : [
 		"Cactus",
 		"Downloader",
 		"HTTP"
-	]
+	],
+	"support" : {
+		"email" : "info@viraweb123.ir",
+		"issues" : "https://github.com/cactus-io/mammillaria",
+		"wiki" : "https://github.com/cactus-io/mammillaria",
+		"source" : "https://github.com/cactus-io/mammillaria",
+		"forum" : "https://cactus-io.viraweb123.ir/wb/blog"
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"Cactus\\Mammillaria\\Tests\\" : "tests"
+		}
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Cactus\\Mammillaria\\" : "src"
+		}
+	}
 }

@@ -1,0 +1,12 @@
+{
+	"name" : "cactus-io/mammillaria",
+	"description" : "A simple fast and stateless download micro-service",
+	"type" : "project",
+	"license" : "MIT",
+	"minimum-stability" : "stable",
+	"prefer-stable" : true,
+	"require" : {
+		"cactus-io/mammillaria" : "7.0.x"
+	},
+	"homepage" : "https://github.com/cactus-io/mammillaria"
+}
