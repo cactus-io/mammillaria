@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+   imgx:
+      build:
+         context: .
+      hostname: mammillaria
+      environment:
+         - IMGX_ALLOWED_HOST=*
+      volumes:
+         - "/home:/home"
+         - ".:/var/www"
+         - "./tmp:/tmp"
+      ports:
+         - "80:80"
+

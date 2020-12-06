@@ -21,7 +21,7 @@ Information of the file, access control, and other metadata are placed in
 the JWT token. There are several fields in the token to control Mammillaria.
 For more information about field in the token see document/token.md
 
-## Getting start
+## Quick Start
 
 
 
