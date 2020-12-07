@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+require __DIR__ . '/../vendor/autoload.php';
+
+use Cactus\Mammillaria\TokenMessageBuilder;
+use Cactus\Mammillaria\Exceptions\InvalidTokenException;
+
+
+
+
+echo "Mammillaria\n";
+$handle = fopen ("php://stdin","r");
+
+
+echo "File Path:";
+$path = trim(fgets($handle));
+
+echo "Access (r, rw, w):";
+$access = trim(fgets($handle));
+
+echo "Expire at (ex. 2021-01-01 00:00:00):";
+$expiry = trim(fgets($handle));
+
+echo "Key:";
+$key = trim(fgets($handle));
+
+echo "\n\n\n";
+echo "-------------------------------------------\n";
+echo "Token:\n";
+echo "-------------------------------------------\n";
+echo " File     |".$path."\n";
+echo " Access   |".$access."\n";
+echo " Expiry   |".$expiry."\n";
+echo "-------------------------------------------\n";
+echo  TokenMessageBuilder::newInstance()
+	->setAccess($access)
+	->setExpiry($expiry)
+	->setPath($path)
+	->sign($key);
+
+echo "\n\n\n";

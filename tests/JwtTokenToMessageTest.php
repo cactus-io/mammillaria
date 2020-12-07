@@ -2,7 +2,7 @@
 namespace Cactus\Mammillaria\Tests;
 
 use Cactus\Mammillaria\JwtToMessage;
-use Cactus\Mammillaria\Message;
+use Cactus\Mammillaria\TokenMessage;
 use Cactus\Mammillaria\Exceptions\TokenExpiredException;
 use Firebase\JWT\JWT;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +36,7 @@ class JwtTokenToMessageTest extends TestCase
         // Create a stub for the SomeClass class.
         $stub = $this->createMock(UnitTrackerInterface::class);
 
-        $message = new Message();
+        $message = new TokenMessage();
         $message->path = $token['path'];
         $message->expiry = $token['expiry'];
         $message->access = $token['access'];
@@ -84,7 +84,7 @@ class JwtTokenToMessageTest extends TestCase
         // Create a stub for the SomeClass class.
         $stub = $this->createMock(UnitTrackerInterface::class);
 
-        $message = new Message();
+        $message = new TokenMessage();
         $message->path = $token['path'];
         $message->expiry = $token['expiry'];
         $message->access = $token['access'];

@@ -2,7 +2,7 @@
 namespace Cactus\Mammillaria\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Cactus\Mammillaria\Message;
+use Cactus\Mammillaria\TokenMessage;
 
 class MessageTest extends TestCase
 {
@@ -13,18 +13,18 @@ class MessageTest extends TestCase
      */
     public function redAccessPermissionTest()
     {
-        $message = new Message();
-        $message->access = 'rw';
-        $this->assertTrue($message->hasReadPermission(), 'Red access is not valid');
-        $this->assertTrue($message->hasWritePermission(), 'Write access is not valid');
+        $TokenMessage = new TokenMessage();
+        $TokenMessage->access = 'rw';
+        $this->assertTrue($TokenMessage->hasReadPermission(), 'Red access is not valid');
+        $this->assertTrue($TokenMessage->hasWritePermission(), 'Write access is not valid');
 
-        $message->access = 'r';
-        $this->assertTrue($message->hasReadPermission(), 'Red access is not valid');
-        $this->assertFalse($message->hasWritePermission(), 'Write access is not valid');
+        $TokenMessage->access = 'r';
+        $this->assertTrue($TokenMessage->hasReadPermission(), 'Red access is not valid');
+        $this->assertFalse($TokenMessage->hasWritePermission(), 'Write access is not valid');
 
-        $message->access = 'w';
-        $this->assertFalse($message->hasReadPermission(), 'Red access is not valid');
-        $this->assertTrue($message->hasWritePermission(), 'Write access is not valid');
+        $TokenMessage->access = 'w';
+        $this->assertFalse($TokenMessage->hasReadPermission(), 'Red access is not valid');
+        $this->assertTrue($TokenMessage->hasWritePermission(), 'Write access is not valid');
     }
 
     /**
@@ -33,13 +33,13 @@ class MessageTest extends TestCase
      */
     public function expiryTest()
     {
-        $message = new Message();
-        $message->expiry = '1900-01-01 00:00:00';
-        $this->assertTrue($message->isExpired(), 'expired is not valid');
+        $TokenMessage = new TokenMessage();
+        $TokenMessage->expiry = '1900-01-01 00:00:00';
+        $this->assertTrue($TokenMessage->isExpired(), 'expired is not valid');
 
-        $message = new Message();
-        $message->expiry = '3000-01-01 00:00:00';
-        $this->assertFalse($message->isExpired(), 'expired is not valid');
+        $TokenMessage = new TokenMessage();
+        $TokenMessage->expiry = '3000-01-01 00:00:00';
+        $this->assertFalse($TokenMessage->isExpired(), 'expired is not valid');
     }
 }
 

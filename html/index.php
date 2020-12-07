@@ -1,29 +1,48 @@
 <?php
-/*
- * MIT License
- *
- * Copyright (c) 2019 cactus-io
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-require 'vendor/autoload.php';
-require 'Pluf.php';
-Pluf::start('config.php');
-Pluf_Dispatcher::dispatch(Pluf_HTTP_URL::getAction(), 'urls.php');
+require __DIR__ . '/../vendor/autoload.php';
+
+use Pluf\Di\Container;
+use Pluf\Http\HttpResponseEmitter;
+use Pluf\Http\ResponseFactory;
+use Pluf\Http\ServerRequestFactory;
+use Pluf\Scion\UnitTracker;
+use Cactus\Mammillaria\JwtToMessage;
+use Cactus\Mammillaria\MessageToFile;
+
+// *****************************************************************
+// Services
+// TODO: maso, 2020: we are in need to discover and load services the
+// springBoot is a very good model.
+// *****************************************************************
+$container = new Container();
+
+$container['configs'] = Container::service(function () {
+    return new Options(require __DIR__ . '/configs.php');
+});
+
+$container['FileToHttpResponseUnit'] = Container::service(function () {
+    return new Options(require __DIR__ . '/configs.php');
+});
+
+$container['JwtToMessageUnit'] = Container::service(function (Options $configs) {
+    $options = $configs->startsWith('mammillaria_', true);
+    return new JwtToMessage($options->key, $options->algorithems);
+});
+
+$container['MessageToFileUnit'] = Container::service(function (Options $configs) {
+    $options = $configs->startsWith('mammillaria_', true);
+    return new MessageToFile($options->storage);
+});
+
+// *****************************************************************
+// Processes
+// *****************************************************************
+$unitTracker = new UnitTracker(require __DIR__ . '/units.php', $container);
+$responseFactory = new ResponseFactory();
+$httpResponseEmitter = new HttpResponseEmitter();
+$httpResponseEmitter->emit($unitTracker->doProcess([
+    'request' => ServerRequestFactory::createFromGlobals(),
+    'response' => $responseFactory->createResponse(200, 'Success'),
+    'responseFactory' => $responseFactory
+]));
 

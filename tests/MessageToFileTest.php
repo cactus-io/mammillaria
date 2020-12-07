@@ -1,7 +1,7 @@
 <?php
 namespace Cactus\Mammillaria\Tests;
 
-use Cactus\Mammillaria\Message;
+use Cactus\Mammillaria\TokenMessage;
 use Cactus\Mammillaria\MessageToFile;
 use Cactus\Mammillaria\Exceptions\PermissionDeniedException;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +16,7 @@ class MessageToFileTest extends TestCase
      */
     public function provideParamsFileExisted()
     {
-        $message = new Message();
+        $message = new TokenMessage();
         $message->access = 'rw';
         $message->expiry = '3000-01-01 00:00:00:';
         $message->path = basename(__FILE__);
@@ -33,7 +33,7 @@ class MessageToFileTest extends TestCase
     {
         $this->expectException(FileNotFoundException::class);
 
-        $message = new Message();
+        $message = new TokenMessage();
         $message->access = 'rw';
         $message->expiry = '3000-01-01 00:00:00:';
         $message->path = '/xxx.txt';
@@ -50,7 +50,7 @@ class MessageToFileTest extends TestCase
     {
         $this->expectException(PermissionDeniedException::class);
 
-        $message = new Message();
+        $message = new TokenMessage();
         $message->access = 'xx';
         $message->expiry = '3000-01-01 00:00:00:';
         $message->path = basename(__FILE__);
