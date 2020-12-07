@@ -8,6 +8,7 @@ use Pluf\Http\ServerRequestFactory;
 use Pluf\Scion\UnitTracker;
 use Cactus\Mammillaria\JwtToMessage;
 use Cactus\Mammillaria\MessageToFile;
+use Pluf\Scion\Process\Http\FileToHttpResponse;
 
 // *****************************************************************
 // Services
@@ -21,7 +22,7 @@ $container['configs'] = Container::service(function () {
 });
 
 $container['FileToHttpResponseUnit'] = Container::service(function () {
-    return new Options(require __DIR__ . '/configs.php');
+    return new FileToHttpResponse();
 });
 
 $container['JwtToMessageUnit'] = Container::service(function (Options $configs) {

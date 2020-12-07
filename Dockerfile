@@ -56,6 +56,8 @@ RUN apt-get update \
 ####################################################
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_ALLOW_SUPERUSER 0
+ENV MAMMILLARIA_JWT_KEY 123
+ENV MAMMILLARIA_STORAGE /mnt/storage
 
 ####################################################
 # Installl composer

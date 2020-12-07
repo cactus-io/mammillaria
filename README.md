@@ -1,11 +1,10 @@
 # Mammillaria
 
-Mammillaria is light, fast, and stateless micro-service to manage contents to
+Mammillaria is light, fast, and stateless file download micro-service that servered contents to
 be download by 3th partis.
 
-Mammillaria uses JWT to protect contents from anonymous access.
-
-It can be used with any other micro-services as download center.
+Mammillaria uses JWT to protect contents from anonymous access while providing a direct link to
+contents.
 
 ## Download API
 
@@ -32,11 +31,12 @@ Create a test file:
 
 	touch README.md
 	echo "#Hello world">>README.md
+	cd ..
 
 First of all generate a token by executing the following command:
 
 	docker run -it \
-		5a73c08cdc5c \
+		cactusio/mammillaria:latest \
 		../bin/generate-token
 
 Fill all required attribute to generate a new token:
@@ -61,10 +61,8 @@ To run a new instance of the server:
 	docker run \
 		-p "80:80" \
 		-e "MAMMILLARIA_JWT_KEY=321" \
-		-v .:/mnt/storage \
-		5a73c08cdc5c
-		
-		cactos-iso/mammillaria:latest
+		-v ./mammillaria:/mnt/storage \
+		cactusio/mammillaria:latest
 
 Open a browser to download the file
 
@@ -74,3 +72,17 @@ Open a browser to download the file
 example:
 
 	http://localhost:80/api/v2/cactus/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXRoIjoiXC9SRUFETUUubWQiLCJhY2Nlc3MiOiJyIiwiZXhwaXJ5IjoiMjAyMS0wMS0wMSAwMDowMDowMCIsImhvc3QiOm51bGwsImFjY291bnQiOm51bGx9.7ayp1qlry4F_3yTJ1RkG9lYGgBowHVhXZoXYINjuyj8/content
+
+	
+	
+## Contributing
+
+If you would like to contribute to the project, please read our
+[contributor documentation](http://cactus-io.viraweb123.ir/wb/blog/content-contributor)
+and the [`CONTRIBUTING.md`](CONTRIBUTING.md). The `CONTRIBUTING.md` file
+explains how to set up a development installation, how to run the test suite,
+and how to contribute to documentation.
+
+For a high-level view of the vision and next directions of the project, see the
+[Cactus community roadmap](docs/roadmap.md).
+
