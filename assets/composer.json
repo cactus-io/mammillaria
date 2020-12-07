@@ -1,12 +1,14 @@
 {
-	"name" : "cactus-io/mammillaria",
+	"name" : "cactus/mammillaria",
 	"description" : "A simple fast and stateless download micro-service",
 	"type" : "project",
 	"license" : "MIT",
 	"minimum-stability" : "stable",
 	"prefer-stable" : true,
 	"require" : {
-		"cactus-io/mammillaria" : "7.0.x"
+		"pluf/di" : "7.0.x",
+		"pluf/http2" : "7.0.x",
+		"cactus-io/mammillaria" : "0.2.x"
 	},
 	"homepage" : "https://github.com/cactus-io/mammillaria"
 }

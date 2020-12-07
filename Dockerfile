@@ -75,6 +75,9 @@ RUN cd /var/www/ \
 ####################################################
 COPY ./assets/mime.types /var/www/etc/
 COPY ./assets/php.ini "$PHP_INI_DIR/php.ini"
+RUN mkdir /var/www/bin
+COPY ./assets/generate-token /var/www/bin
+RUN chmod +x /var/www/bin/generate-token
 COPY html/ /var/www/html/
 
 # Change directory to the html

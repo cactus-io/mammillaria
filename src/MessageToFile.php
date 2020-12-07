@@ -26,7 +26,7 @@ class MessageToFile
         $this->storage = $storage;
     }
 
-    public function __invoke(Message $message)
+    public function __invoke(TokenMessage $message)
     {
 
         // check access of read

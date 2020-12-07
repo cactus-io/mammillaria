@@ -52,11 +52,11 @@ class JwtToMessage
      * Converts JWT token to a message
      *
      * @param mixed $token
-     * @return Message
+     * @return TokenMessage
      */
-    public static function jwtToMessage($token): Message
+    public static function jwtToMessage($token): TokenMessage
     {
-        $message = new Message();
+        $message = new TokenMessage();
         $message->path = $token->path;
         $message->access = $token->access;
         $message->expiry = $token->expiry;
